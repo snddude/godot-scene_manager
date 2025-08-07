@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs13aqgeulmq0"]
+
+[ext_resource type="Script" uid="uid://dbs1vqujdn6cm" path="res://addons/scene_manager/scripts/scene_manager.gd" id="1_0iiy6"]
+
+[node name="SceneManager" type="CanvasLayer"]
+process_mode = 3
+physics_interpolation_mode = 2
+layer = 30
+script = ExtResource("1_0iiy6")

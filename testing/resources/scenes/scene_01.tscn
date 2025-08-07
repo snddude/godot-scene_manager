@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7mompvgchi1m"]
+
+[sub_resource type="GDScript" id="GDScript_j2m7k"]
+resource_name = "test_scene"
+script/source = "class_name TestScene
+extends Control
+
+@export_group(\"Nodes\")
+@export var show_progress: CheckButton
+@export var scene_path: LineEdit
+@export var none: Button
+@export var fade_in: Button
+@export var fade_out: Button
+@export var fade_in_out: Button
+
+
+func _ready() -> void:
+	none.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_NONE))
+	fade_in.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_IN))
+	fade_out.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_OUT))
+	fade_in_out.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_IN_OUT))
+"
+
+[node name="Scene01" type="Control" node_paths=PackedStringArray("show_progress", "scene_path", "none", "fade_in", "fade_out", "fade_in_out")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_j2m7k")
+show_progress = NodePath("VBoxContainer/ShowProgress")
+scene_path = NodePath("VBoxContainer/HBoxContainer2/ScenePath")
+none = NodePath("VBoxContainer/HBoxContainer/None")
+fade_in = NodePath("VBoxContainer/HBoxContainer/FadeIn")
+fade_out = NodePath("VBoxContainer/HBoxContainer/FadeOut")
+fade_in_out = NodePath("VBoxContainer/HBoxContainer/FadeInOut")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -107.5
+offset_top = 32.0
+offset_right = 107.5
+offset_bottom = 99.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "SCENE 01"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShowProgress" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Show progress"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Path to next scene:"
+
+[node name="ScenePath" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "res://testing/resources/scenes/"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="None" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "None"
+
+[node name="FadeIn" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Fade In"
+
+[node name="FadeOut" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Fade Out"
+
+[node name="FadeInOut" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Fade In Out"

@@ -1,0 +1,84 @@
+[gd_scene load_steps=10 format=3 uid="uid://cicdr8hhaad23"]
+
+[ext_resource type="Script" uid="uid://bfaxie4nfb7kx" path="res://addons/scene_manager/scripts/scene_load_failed_dialog.gd" id="1_iy6og"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgahi"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.94, 0.94, 0.94, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_iy6og"]
+font_names = PackedStringArray("Segoe UI", "Noto Sans")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqb4u"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.470588, 0.843137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g105m"]
+content_margin_left = 28.0
+content_margin_top = 2.0
+content_margin_right = 28.0
+content_margin_bottom = 2.0
+bg_color = Color(0.898039, 0.945098, 0.984314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iy6og"]
+content_margin_left = 28.0
+content_margin_top = 2.0
+content_margin_right = 28.0
+content_margin_bottom = 2.0
+bg_color = Color(0.88, 0.88, 0.88, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.67, 0.67, 0.67, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ssuuu"]
+content_margin_left = 28.0
+content_margin_top = 2.0
+content_margin_right = 28.0
+content_margin_bottom = 2.0
+bg_color = Color(0.8, 0.894118, 0.968627, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_fgahi"]
+font_names = PackedStringArray("Segoe UI", "Noto Sans")
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_g105m"]
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_fgahi")
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/font_sizes/font_size = 12
+Button/fonts/font = SubResource("SystemFont_iy6og")
+Button/styles/focus = SubResource("StyleBoxFlat_pqb4u")
+Button/styles/hover = SubResource("StyleBoxFlat_g105m")
+Button/styles/normal = SubResource("StyleBoxFlat_iy6og")
+Button/styles/pressed = SubResource("StyleBoxFlat_ssuuu")
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/font_sizes/font_size = 12
+Label/fonts/font = SubResource("SystemFont_fgahi")
+
+[node name="LoadFailedDialog" type="AcceptDialog"]
+title = "Failed to load scene"
+initial_position = 2
+size = Vector2i(320, 80)
+transient = false
+unresizable = true
+always_on_top = true
+force_native = true
+max_size = Vector2i(320, 16384)
+theme = SubResource("Theme_g105m")
+dialog_text = "Failed to load scene \"%s\"."
+dialog_close_on_escape = false
+dialog_autowrap = true
+script = ExtResource("1_iy6og")
