@@ -49,10 +49,10 @@ func _process(delta: float) -> void:
 	match status:
 		ResourceLoader.ThreadLoadStatus.THREAD_LOAD_FAILED:
 			set_process(false)
-			display_load_failed_dialog(status)
+			_display_load_failed_dialog(status)
 		ResourceLoader.ThreadLoadStatus.THREAD_LOAD_INVALID_RESOURCE:
 			set_process(false)
-			display_load_failed_dialog(status)
+			_display_load_failed_dialog(status)
 		ResourceLoader.THREAD_LOAD_LOADED:
 			if (show_progress and _wait_for_progress_bar and _progress_bar.value != _max_progress):
 				return
@@ -87,7 +87,7 @@ func _fade_out() -> void:
 	tween.tween_property(self, "modulate:a", 0.0, _fade_out_time)
 
 
-func display_load_failed_dialog(fail_reason: ResourceLoader.ThreadLoadStatus) -> void:
+func _display_load_failed_dialog(fail_reason: ResourceLoader.ThreadLoadStatus) -> void:
 	var instance: SceneLoadFailedDialog = LOAD_FAILED_DIALOG.instantiate()
 	instance.path = path
 	instance.fail_reason = fail_reason
