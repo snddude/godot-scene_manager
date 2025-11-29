@@ -12,9 +12,10 @@ The way you transition to a different scene is as follows:
 
 ```gdscript
 SceneManager.load_scene(
-        path_to_scene: String,     # Path to the scene you want to transition to (e.g. res://resources/scenes/...).
-        show_progress: bool,       # Should the spinner and progress bar be visible on the loading screen.
-        transition: TranstionType  # The type of transition displayed when showing/hiding the loading screen.
+        path_to_scene: String,           # Path to the scene you want to transition to (e.g. res://resources/scenes/...).
+        transition: TranstionType,       # The type of transition displayed when showing/hiding the loading screen.
+        show_spinner: bool = true,       # Should the spinner be visible on the loading screen, set to true by default.
+        show_progress_bar: bool = false  # Should the progress bar be visible on the loading screen, set to false by default.
 )
 ```
 
