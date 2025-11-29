@@ -16,7 +16,11 @@ const LOADING_SCREEN_SCENE: PackedScene = preload(
 var _loading_scene: bool = false
 
 
-func load_scene(path_to_scene: String, show_progress: bool, transition: TransitionType) -> void:
+func load_scene(
+		path_to_scene: String,
+		transition_type: TransitionType,
+		show_spinner: bool = true,
+		show_progress_bar: bool = false) -> void:
 	if _loading_scene:
 		return
 
@@ -24,11 +28,15 @@ func load_scene(path_to_scene: String, show_progress: bool, transition: Transiti
 	started_loading_scene.emit()
 
 	var instance: LoadingScreen = LOADING_SCREEN_SCENE.instantiate()
-	instance.show_progress = show_progress
-	instance.fade_in = (transition in [TRANSITION_TYPE_FADE_IN, TRANSITION_TYPE_FADE_IN_OUT])
-	instance.fade_out = (transition in [TRANSITION_TYPE_FADE_OUT, TRANSITION_TYPE_FADE_IN_OUT])
+
+	instance.show_spinner = show_spinner
+	instance.show_progress_bar = show_progress_bar
+	instance.fade_in = (transition_type in [TRANSITION_TYPE_FADE_IN, TRANSITION_TYPE_FADE_IN_OUT])
+	instance.fade_out = (transition_type in [TRANSITION_TYPE_FADE_OUT, TRANSITION_TYPE_FADE_IN_OUT])
 	instance.path = path_to_scene
+
 	instance.load_finished.connect(_change_scene)
+
 	add_child(instance)
 
 	if instance.fade_in:

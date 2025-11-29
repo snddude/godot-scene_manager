@@ -22,8 +22,7 @@ SceneManager="*res://addons/scene_manager/resources/scenes/autoload/scene_manage
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=720
-window/size/mode=4
+window/size/viewport_height=800
 window/vsync/vsync_mode=0
 
 [editor_plugins]

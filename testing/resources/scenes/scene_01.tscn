@@ -5,9 +5,10 @@ resource_name = "test_scene"
 script/source = "class_name TestScene
 extends Control
 
+@export_file(\"*.tscn\") var next_scene: String
 @export_group(\"Nodes\")
-@export var show_progress: CheckButton
-@export var scene_path: LineEdit
+@export var show_spinner: CheckButton
+@export var show_progress_bar: CheckButton
 @export var none: Button
 @export var fade_in: Button
 @export var fade_out: Button
@@ -15,13 +16,37 @@ extends Control
 
 
 func _ready() -> void:
-	none.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_NONE))
-	fade_in.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_IN))
-	fade_out.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_OUT))
-	fade_in_out.pressed.connect(func(): SceneManager.load_scene(scene_path.text, show_progress.is_pressed(), SceneManager.TRANSITION_TYPE_FADE_IN_OUT))
+	none.pressed.connect(
+		func():
+			SceneManager.load_scene(
+					next_scene,
+					SceneManager.TRANSITION_TYPE_NONE,
+					show_spinner.is_pressed(),
+					show_progress_bar.is_pressed()))
+	fade_in.pressed.connect(
+		func():
+			SceneManager.load_scene(
+					next_scene,
+					SceneManager.TRANSITION_TYPE_FADE_IN,
+					show_spinner.is_pressed(),
+					show_progress_bar.is_pressed()))
+	fade_out.pressed.connect(
+		func():
+			SceneManager.load_scene(
+					next_scene,
+					SceneManager.TRANSITION_TYPE_FADE_OUT,
+					show_spinner.is_pressed(),
+					show_progress_bar.is_pressed()))
+	fade_in_out.pressed.connect(
+		func():
+			SceneManager.load_scene(
+					next_scene,
+					SceneManager.TRANSITION_TYPE_FADE_IN_OUT,
+					show_spinner.is_pressed(),
+					show_progress_bar.is_pressed()))
 "
 
-[node name="Scene01" type="Control" node_paths=PackedStringArray("show_progress", "scene_path", "none", "fade_in", "fade_out", "fade_in_out")]
+[node name="Scene01" type="Control" node_paths=PackedStringArray("show_spinner", "show_progress_bar", "none", "fade_in", "fade_out", "fade_in_out")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,12 +54,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_j2m7k")
-show_progress = NodePath("VBoxContainer/ShowProgress")
-scene_path = NodePath("VBoxContainer/HBoxContainer2/ScenePath")
-none = NodePath("VBoxContainer/HBoxContainer/None")
-fade_in = NodePath("VBoxContainer/HBoxContainer/FadeIn")
-fade_out = NodePath("VBoxContainer/HBoxContainer/FadeOut")
-fade_in_out = NodePath("VBoxContainer/HBoxContainer/FadeInOut")
+next_scene = "uid://dd7egkcj11740"
+show_spinner = NodePath("HBoxContainer/VisibilityOptions/ShowSpinner")
+show_progress_bar = NodePath("HBoxContainer/VisibilityOptions/ShowProgressBar")
+none = NodePath("HBoxContainer/TransitionOptions/None")
+fade_in = NodePath("HBoxContainer/TransitionOptions/FadeIn")
+fade_out = NodePath("HBoxContainer/TransitionOptions/FadeOut")
+fade_in_out = NodePath("HBoxContainer/TransitionOptions/FadeInOut")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -49,60 +75,57 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 48
 text = "SCENE 01"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -168.0
+offset_top = -68.0
+offset_right = 168.0
+offset_bottom = 68.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 16
 
-[node name="ShowProgress" type="CheckButton" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Show progress"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TransitionOptions" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Path to next scene:"
-
-[node name="ScenePath" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "res://testing/resources/scenes/"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="None" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="None" type="Button" parent="HBoxContainer/TransitionOptions"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
 text = "None"
 
-[node name="FadeIn" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="FadeIn" type="Button" parent="HBoxContainer/TransitionOptions"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
 text = "Fade In"
 
-[node name="FadeOut" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="FadeOut" type="Button" parent="HBoxContainer/TransitionOptions"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
 text = "Fade Out"
 
-[node name="FadeInOut" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="FadeInOut" type="Button" parent="HBoxContainer/TransitionOptions"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
 text = "Fade In Out"
+
+[node name="VisibilityOptions" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="ShowSpinner" type="CheckButton" parent="HBoxContainer/VisibilityOptions"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Show spinner"
+
+[node name="ShowProgressBar" type="CheckButton" parent="HBoxContainer/VisibilityOptions"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Show progress bar"

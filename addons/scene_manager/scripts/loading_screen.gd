@@ -5,6 +5,9 @@ signal faded_in
 signal faded_out
 signal load_finished(path_to_scene: String)
 
+const PROGRESS_BAR_SMOOTHING: float = 35.0
+const MIN_TIME_ON_SCREEN: float = 0.5
+const SPINNER_FADE_OUT_TIME: float = 0.25
 const LOAD_FAILED_DIALOG: PackedScene = preload(
 		"res://addons/scene_manager/resources/scenes/load_failed_dialog.tscn")
 
@@ -17,7 +20,8 @@ const LOAD_FAILED_DIALOG: PackedScene = preload(
 
 var fade_in: bool = false
 var fade_out: bool = false
-var show_progress: bool = false
+var show_spinner: bool = false
+var show_progress_bar: bool = false
 var path: String = ""
 var _max_progress: float = 0.0
 var _progress: Array[float] = []
@@ -26,8 +30,8 @@ var _progress: Array[float] = []
 func _ready() -> void:
 	_max_progress = _progress_bar.max_value
 
-	_spinner.visible = show_progress
-	_progress_bar.visible = show_progress
+	_spinner.visible = show_spinner
+	_progress_bar.visible = show_progress_bar
 
 	if fade_in:
 		modulate.a = 0.0
@@ -40,10 +44,11 @@ func _process(delta: float) -> void:
 	if not path:
 		return
 
-	var status: ResourceLoader.ThreadLoadStatus = ResourceLoader.load_threaded_get_status(path, 
+	var status: ResourceLoader.ThreadLoadStatus = ResourceLoader.load_threaded_get_status(
+			path, 
 			_progress)
 
-	var rate: float = 1.0 - exp(-35.0 * delta)
+	var rate: float = 1.0 - exp(-PROGRESS_BAR_SMOOTHING * delta)
 	_progress_bar.value = move_toward(_progress_bar.value, _progress[0] * _max_progress, rate)
 
 	match status:
@@ -54,16 +59,18 @@ func _process(delta: float) -> void:
 			set_process(false)
 			_display_load_failed_dialog(status)
 		ResourceLoader.THREAD_LOAD_LOADED:
-			if (show_progress and _wait_for_progress_bar and _progress_bar.value != _max_progress):
+			if (
+					show_progress_bar
+					and _wait_for_progress_bar
+					and _progress_bar.value != _max_progress):
 				return
 
 			set_process(false)
 
 			_progress_bar.value = _max_progress
-			create_tween().tween_property(_spinner, "modulate:a", 0.0, 0.25)
+			create_tween().tween_property(_spinner, "modulate:a", 0.0, SPINNER_FADE_OUT_TIME)
 
-			# Wait for minimum ammount of time for loading screen to be visible
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(MIN_TIME_ON_SCREEN).timeout
 			load_finished.emit(path)
 
 			if fade_out:
